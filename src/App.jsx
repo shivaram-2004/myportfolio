@@ -22,6 +22,9 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import shivaImage from './assets/shiva.jpg';
 import resume from './assets/Resume.pdf'; // Assuming resume.pdf is in the assets folder
 
+import { Drawer, List, ListItem, ListItemText, Divider } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
 const projectsData = [
   {
     title: "Chat Bot for Food Stories",
@@ -91,6 +94,11 @@ const App = () => {
   const handleViewProject = (link) => {
     window.open(link, '_blank');
   };
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -111,22 +119,27 @@ const App = () => {
             Portfolio
           </Typography>
 
-          {!isMobile && (
-            <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-              <Button color="inherit" href="#about" sx={{ fontWeight: 600 }}>
-                About Me
-              </Button>
-              <Button color="inherit" href="#projects" sx={{ fontWeight: 600 }}>
-                Projects
-              </Button>
-              <Button color="inherit" href="#services" sx={{ fontWeight: 600 }}>
-                Services
-              </Button>
-              <Button color="inherit" href="#contact" sx={{ fontWeight: 600 }}>
-                Contact
-              </Button>
-            </Box>
-          )}
+          {isMobile ? (
+                  <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
+                    <MenuIcon />
+                  </IconButton>
+                ) : (
+                  <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                    <Button color="inherit" href="#about" sx={{ fontWeight: 600 }}>
+                      About Me
+                    </Button>
+                    <Button color="inherit" href="#projects" sx={{ fontWeight: 600 }}>
+                      Projects
+                    </Button>
+                    <Button color="inherit" href="#services" sx={{ fontWeight: 600 }}>
+                      Services
+                    </Button>
+                    <Button color="inherit" href="#contact" sx={{ fontWeight: 600 }}>
+                      Contact
+                    </Button>
+                  </Box>
+                )}
+
 
           <IconButton color="inherit" onClick={handleToggleTheme}>
             {darkMode ? <Brightness7 /> : <Brightness4 />}
@@ -134,7 +147,64 @@ const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Container sx={{ mt: 6 }}>
+      <Drawer
+              anchor="left"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile
+              }}
+            >
+              <Box
+                sx={{ width: 250 }}
+                role="presentation"
+                onClick={handleDrawerToggle}
+                onKeyDown={handleDrawerToggle}
+              >
+                <List>
+                  <ListItem button component="a" href="#about">
+                    <ListItemText primary="About Me" />
+                  </ListItem>
+                  <ListItem button component="a" href="#projects">
+                    <ListItemText primary="Projects" />
+                  </ListItem>
+                  <ListItem button component="a" href="#services">
+                    <ListItemText primary="Services" />
+                  </ListItem>
+                  <ListItem button component="a" href="#contact">
+                    <ListItemText primary="Contact" />
+                  </ListItem>
+                </List>
+                <Divider />
+              </Box>
+            </Drawer>
+
+
+      <Container
+              sx={{
+                mt: 6,
+                position: "relative",
+                zIndex: 1,
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  zIndex: -1,
+                  backgroundImage: darkMode
+                    ? `radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05), transparent 70%),
+                      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04), transparent 70%)`
+                    : `radial-gradient(circle at 20% 30%, rgba(0,0,0,0.03), transparent 70%),
+                      radial-gradient(circle at 80% 70%, rgba(0,0,0,0.02), transparent 70%)`,
+                  backgroundColor: darkMode ? "#121212" : "#f5f5f5",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                },
+              }}
+            >
+
         <AnimatePresence mode="wait">
           {showProfile && (
             <motion.div
@@ -190,9 +260,18 @@ const App = () => {
                 <Grid item xs={12} md={8}>
                   <Typography variant="h3" color="primary" gutterBottom>
                     Hi, I'm{" "}
-                    <span style={{ color: theme.palette.secondary.main }}>
-                      Shiva Rama Krishna Reddy
-                    </span>
+                    <Box
+                        sx={{
+                          color: theme => theme.palette.secondary.main,
+                          fontWeight: 'bold',
+                          
+                        }}
+                      >
+                        Shiva Rama Krishna Reddy
+                      </Box>
+
+
+
                   </Typography>
                   <Typography variant="h6">
                     Motivated Computer Science student with strong programming skills, expertise in Data Structures and Algorithms,
