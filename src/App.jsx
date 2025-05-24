@@ -22,9 +22,6 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import shivaImage from './assets/shiva.jpg';
 import resume from './assets/Resume.pdf'; // Assuming resume.pdf is in the assets folder
 
-import { Drawer, List, ListItem, ListItemText, Divider } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-
 const projectsData = [
   {
     title: "Chat Bot for Food Stories",
@@ -94,12 +91,7 @@ const App = () => {
   const handleViewProject = (link) => {
     window.open(link, '_blank');
   };
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -119,66 +111,28 @@ const App = () => {
             Portfolio
           </Typography>
 
-          {isMobile ? (
-                  <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
-                    <MenuIcon />
-                  </IconButton>
-                ) : (
-                  <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                    <Button color="inherit" href="#about" sx={{ fontWeight: 600 }}>
-                      About Me
-                    </Button>
-                    <Button color="inherit" href="#projects" sx={{ fontWeight: 600 }}>
-                      Projects
-                    </Button>
-                    <Button color="inherit" href="#services" sx={{ fontWeight: 600 }}>
-                      Services
-                    </Button>
-                    <Button color="inherit" href="#contact" sx={{ fontWeight: 600 }}>
-                      Contact
-                    </Button>
-                  </Box>
-                )}
-
+          {!isMobile && (
+            <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+              <Button color="inherit" href="#about" sx={{ fontWeight: 600 }}>
+                About Me
+              </Button>
+              <Button color="inherit" href="#projects" sx={{ fontWeight: 600 }}>
+                Projects
+              </Button>
+              <Button color="inherit" href="#services" sx={{ fontWeight: 600 }}>
+                Services
+              </Button>
+              <Button color="inherit" href="#contact" sx={{ fontWeight: 600 }}>
+                Contact
+              </Button>
+            </Box>
+          )}
 
           <IconButton color="inherit" onClick={handleToggleTheme}>
             {darkMode ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
         </Toolbar>
       </AppBar>
-
-      <Drawer
-              anchor="left"
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              ModalProps={{
-                keepMounted: true, // Better open performance on mobile
-              }}
-            >
-              <Box
-                sx={{ width: 250 }}
-                role="presentation"
-                onClick={handleDrawerToggle}
-                onKeyDown={handleDrawerToggle}
-              >
-                <List>
-                  <ListItem button component="a" href="#about">
-                    <ListItemText primary="About Me" />
-                  </ListItem>
-                  <ListItem button component="a" href="#projects">
-                    <ListItemText primary="Projects" />
-                  </ListItem>
-                  <ListItem button component="a" href="#services">
-                    <ListItemText primary="Services" />
-                  </ListItem>
-                  <ListItem button component="a" href="#contact">
-                    <ListItemText primary="Contact" />
-                  </ListItem>
-                </List>
-                <Divider />
-              </Box>
-            </Drawer>
-
 
       <Container
               sx={{
